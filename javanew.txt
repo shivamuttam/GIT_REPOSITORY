@@ -1,0 +1,39 @@
+#
+# Cookbook Name:: php
+# Recipe:: default
+#
+# Copyright (c) 2016 The Authors, All Rights Reserved.
+
+package 'httpd'
+
+service 'httpd' do
+action [:enable, :start]
+end
+
+template '/var/www/html/info.php' do
+source 'info.php.erb'
+end
+
+service 'iptables' do
+action :stop
+end
+
+
+remote_file "#{Chef::Config[:file_cache_path]}/webstatic_repo_latest.rpm" do
+source "https://mirror.webtatic.com/yum/el6/latest.rpm"
+action :create_if_missing
+mode "0755"
+backup false
+end
+
+package 'webstatic_repo_latest' do
+action :install
+source "#{Chef::Config[:file_cache_path]}/webstatic_repo_latest.rpm"
+end
+
+%w{php70w php70w-bcmath php70w-cli php70w-common php70w-dba php70w-devel php70w-embedded php70w-enchant php70w-fpm php70w-gd php70w-imap php70w-interbase php70w-intl php70w-ldap php70w-mbstring php70w-mcrypt php70w-mysql php70w-odbc php70w-pdo php70w-pdo_dblib php70w-pear php70w-pgsql php70w-phpdbg php70w-process php70w-pspell php70w-recode php70w-snmp php70w-soap php70w-tidy php70w-xml php70w-xmlrpc}. each do |pkg|
+
+package "#{pkg}" do
+action :install
+end
+end

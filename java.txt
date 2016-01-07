@@ -1,0 +1,29 @@
+#
+# Cookbook Name:: java
+# Recipe:: default
+#
+# Copyright (c) 2016 The Authors, All Rights Reserved.
+
+package 'java-1.6.0-openjdk' do
+action :remove
+end
+bash  "java install" do
+
+code <<-EOH
+mkdir /opt/jdk
+cd /opt/jdk
+
+        wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u65-b17/jdk-8u65-linux-x64.tar.gz"
+
+        tar xzf jdk-8u65-linux-x64.tar.gz
+
+        update-alternatives --install /usr/bin/java java /opt/jdk/jdk1.8.0_65/bin/java 100
+ 	
+	update-alternatives --install /usr/bin/javac javac /opt/jdk/jdk1.8.0_65/bin/javac 100
+
+        export JAVA_HOME=/opt/jdk/jdk1.8.0_65
+        export JRE_HOME=/opt/jdk/jdk1.8.0_65/jre
+        export PATH=$PATH:/opt/jdk/jdk1.8.0_65/bin:/opt/jdk1.8.0_65/jre/bin
+
+EOH
+end
