@@ -24,6 +24,8 @@ cd /opt/jdk
         export JAVA_HOME=/opt/jdk/jdk1.8.0_65
         export JRE_HOME=/opt/jdk/jdk1.8.0_65/jre
         export PATH=$PATH:/opt/jdk/jdk1.8.0_65/bin:/opt/jdk1.8.0_65/jre/bin
+        
+        
 
 EOH
 end
